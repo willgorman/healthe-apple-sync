@@ -18,7 +18,7 @@ type StepCount struct {
 	Value        int    `xml:"value,attr"`
 }
 
-func parseHealthKitExportXML(filePath string) (*DailySteps, error) {
+func ParseHealthKitExportXML(filePath string) (*DailySteps, error) {
 	file, err := os.Open(filePath)
 	if err != nil {
 		return nil, err

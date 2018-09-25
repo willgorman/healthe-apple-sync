@@ -6,14 +6,14 @@ import (
 )
 
 func Test(t *testing.T) {
-	a, err := parseHealthKitExportXML("/Users/Will/Downloads/apple_health_export/export.xml")
+	a, err := ParseHealthKitExportXML("/Users/Will/Downloads/apple_health_export/export.xml")
 	if err != nil {
 		panic(err)
 	}
 	// fmt.Println(a)
 	fmt.Println(len(a.steps))
 
-	for k, _ := range a.steps {
-		fmt.Println(k)
+	for k, v := range a.steps {
+		fmt.Printf("%s: %d\n", k, v)
 	}
 }
