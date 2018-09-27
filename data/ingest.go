@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"encoding/xml"
 	"os"
+	"sort"
 	"strings"
 )
 
@@ -16,6 +17,15 @@ type StepCount struct {
 	StartDate    string `xml:"startDate,attr"`
 	EndDate      string `xml:"endDate,attr"`
 	Value        int    `xml:"value,attr"`
+}
+
+func (d DailySteps) SortedKeys() []string {
+	dates := make([]string, 0, len(d.steps))
+	for date := range d.steps {
+		dates = append(dates, date)
+	}
+	sort.Strings(dates)
+	return dates
 }
 
 func ParseHealthKitExportXML(filePath string) (*DailySteps, error) {
