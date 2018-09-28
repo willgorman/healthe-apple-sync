@@ -17,6 +17,11 @@ type StepCount struct {
 	StartDate    string `xml:"startDate,attr"`
 	EndDate      string `xml:"endDate,attr"`
 	Value        int    `xml:"value,attr"`
+	SourceName   string `xml:"sourceName,attr"`
+}
+
+func (d DailySteps) StepsOnDate(date string) int {
+	return d.steps[date]
 }
 
 func (d DailySteps) SortedKeys() []string {
@@ -48,8 +53,7 @@ func ParseHealthKitExportXML(filePath string) (*DailySteps, error) {
 		// Inspect the type of the token just read.
 		switch se := t.(type) {
 		case xml.StartElement:
-			// If we just read a StartElement token
-			// ...and its name is "page"
+
 			for _, attr := range se.Attr {
 
 				if attr.Value == "HKQuantityTypeIdentifierStepCount" {
@@ -57,8 +61,10 @@ func ParseHealthKitExportXML(filePath string) (*DailySteps, error) {
 					// decode a whole chunk of following XML into the
 					// variable p which is a Page (se above)
 					decoder.DecodeElement(&sc, &se)
-					// Do some stuff with the page.
-					steps.steps[sc.getDay()] += sc.Value
+					// FIXME: hack.  needs to either allow passing name or parse the device info
+					if strings.Contains(sc.SourceName, "Apple Watch") {
+						steps.steps[sc.getDay()] += sc.Value
+					}
 				}
 			}
 		}

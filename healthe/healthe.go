@@ -3,7 +3,6 @@ package healthe
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"html"
 	"net/url"
 	"strconv"
@@ -64,7 +63,7 @@ func (store healtheStepStore) GetSteps(date time.Time) (int, error) {
 		"bid":    []string{"5764"}, //<input id="UserID" type="hidden" value="5764" />
 		"date":   []string{date.Format("1/2/2006")},
 	}
-	fmt.Println("trying")
+
 	err := store.OpenForm("https://healtheatcernerportal.cerner.com/dt/nutr/PedometerEntryAjax.asp", params)
 	if err != nil {
 		log.Errorf("Failed to open form: %s", store.Body())
